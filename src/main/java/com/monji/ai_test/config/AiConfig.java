@@ -1,6 +1,7 @@
 package com.monji.ai_test.config;
 
 import org.springframework.ai.chat.client.ChatClient;
+import org.springframework.ai.embedding.EmbeddingModel;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -12,4 +13,9 @@ public class AiConfig {
         return builder
                 .build();
     }
+
+//    @Bean
+//    public EmbeddingModel embeddingModel() {
+//       GoogleGenAiApi
+//    }
 }

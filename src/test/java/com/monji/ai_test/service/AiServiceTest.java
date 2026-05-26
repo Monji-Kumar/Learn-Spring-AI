@@ -4,6 +4,10 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.util.Arrays;
+
 @SpringBootTest
 public class AiServiceTest {
 
@@ -14,5 +18,34 @@ public class AiServiceTest {
     public void testGetJoke() {
         var joke = aiService.getJoke("programmers");
         System.out.println(joke);
+    }
+
+    @Test
+    public void testEmbedText() {
+        var embed = aiService.getEmbedding("This is a big text");
+        System.out.println(embed.length);
+        System.out.println(Arrays.toString(embed));
+    }
+
+//    @Test
+//    void testConnection() throws Exception {
+//        Connection con = DriverManager.getConnection(
+//                "jdbc:postgresql://localhost:5434/pgvector-test",
+//                "postgres",
+//                "root"
+//        );
+//
+//        System.out.println(con.isValid(2));
+//    }
+
+    @Test
+    void testStoreData() throws Exception {
+        aiService.ingestDataToVectorStore();
+    }
+
+    @Test
+    void testSimilaritySearch() throws Exception {
+        var response = aiService.similaritySearch("pirate anime");
+        System.out.println(response);
     }
 }

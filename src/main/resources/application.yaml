@@ -4,12 +4,32 @@ spring:
   ai:
     model:
       chat: google-genai
+      embedding:
+        text: google-genai
     google:
       genai:
         api-key: ${GEMINI_AI_SECRET_KEY}
         chat:
           options:
             model: gemini-2.5-flash
+        embedding:
+          api-key: ${GEMINI_AI_SECRET_KEY}
+          text:
+            options:
+              model: gemini-embedding-001
+
+
+    vectorstore:
+      pgvector:
+        dimensions: 3072
+        initialize-schema: false
+
+  datasource:
+    url: jdbc:postgresql://localhost:5434/pgvector-test
+    username: postgres
+    password: root
+    driver-class-name: org.postgresql.Driver
+
 logging:
   level:
     org.springframework.ai:
