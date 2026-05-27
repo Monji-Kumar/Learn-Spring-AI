@@ -19,4 +19,10 @@ public class RAGServiceTest {
         var response = ragService.askAi("Tell me about Evanglion");
         System.out.println(response);
     }
+
+    @Test
+    public void testAskAiWithAdvisors(){
+        var response = ragService.askAIWithAdvisors("Suggest a new Action anime to me", "monji00");
+        System.out.println(response);
+    }
 }

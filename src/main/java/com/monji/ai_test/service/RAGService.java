@@ -1,8 +1,15 @@
 package com.monji.ai_test.service;
 
+import com.monji.ai_test.advisor.TokenUseageAdvisor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.ai.chat.client.ChatClient;
+import org.springframework.ai.chat.client.advisor.MessageChatMemoryAdvisor;
+import org.springframework.ai.chat.client.advisor.SafeGuardAdvisor;
 import org.springframework.ai.chat.client.advisor.SimpleLoggerAdvisor;
+import org.springframework.ai.chat.client.advisor.vectorstore.QuestionAnswerAdvisor;
+import org.springframework.ai.chat.client.advisor.vectorstore.VectorStoreChatMemoryAdvisor;
+import org.springframework.ai.chat.memory.ChatMemory;
+import org.springframework.ai.chat.memory.MessageWindowChatMemory;
 import org.springframework.ai.chat.prompt.PromptTemplate;
 import org.springframework.ai.document.Document;
 import org.springframework.ai.embedding.EmbeddingModel;
@@ -26,9 +33,33 @@ public class RAGService {
     private final ChatClient chatClient;
     private final EmbeddingModel embeddingModel;
     private final VectorStore vectorStore;
+    private final ChatMemory chatMemory;
 
     @Value("classpath:ref.pdf")
     Resource pdfFile;
+
+    public String askAIWithAdvisors(String prompt, String userId) {
+        return chatClient.prompt()
+                .system("""
+                        You are an AI Assistant called CODY.
+                        GREET Uses with your Name (CODY) and the user name if you know their name.
+                        Answer in a friendly, conversational tone.
+                        """)
+                .user(prompt)
+                .advisors(
+//                        new SafeGuardAdvisor(List.of("Racism","Gaming")),
+                        MessageChatMemoryAdvisor.builder(chatMemory).build(),
+                        VectorStoreChatMemoryAdvisor.builder(vectorStore).defaultTopK(3).build(),
+//                        QuestionAnswerAdvisor.builder(vectorStore).searchRequest(SearchRequest.builder()
+//                                        .similarityThreshold(0.5)
+////                                        .filterExpression("file_name == 'ref.pdf'")
+//                                        .topK(3)
+//                                .build()).build(),
+                        new TokenUseageAdvisor())
+                .advisors(advisor -> advisor.param(ChatMemory.CONVERSATION_ID, userId))
+                .call()
+                .content();
+    }
 
     public String askAi(String prompt) {
 
@@ -62,7 +93,7 @@ public class RAGService {
         return chatClient.prompt()
                 .system(systemPrompt)
                 .user(prompt)
-                .advisors(new SimpleLoggerAdvisor())
+                .advisors()
                 .call()
                 .content();
     }

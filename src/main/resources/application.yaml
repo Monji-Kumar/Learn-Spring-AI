@@ -24,6 +24,13 @@ spring:
         dimensions: 3072
         initialize-schema: false
 
+    chat:
+      memory:
+        repository:
+          jdbc:
+            initialize-schema: always
+            table-name: chat_memory
+
   datasource:
     url: jdbc:postgresql://localhost:5434/pgvector-test
     username: postgres
