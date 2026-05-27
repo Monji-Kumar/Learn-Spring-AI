@@ -13,8 +13,11 @@ import org.springframework.ai.vectorstore.SearchRequest;
 import org.springframework.ai.vectorstore.VectorStore;
 import org.springframework.stereotype.Service;
 
+import javax.print.Doc;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -44,6 +47,20 @@ public class AiService {
         );
 
         vectorStore.add(anime);
+        vectorStore.add(springAIDocs());
+    }
+
+    public static List<Document> springAIDocs() {
+        return List.of(
+                new Document("A young alien boy who strives to be the strongest just to protect his loved ones",
+                        Map.of("title", "Dragon Ball Series", "Japanese-Title", "Dragon Ball Series", "year", "1999", "genre", "Adventure")),
+                new Document("A young boy who discoves a parallel soul world of grim reapers and becomes their favourite",
+                        Map.of("title", "Bleach Series", "Japanese-Title", "Bleach Series", "year", "2001", "genre", "Magic")),
+                new Document("A young boy discovers a diary that can murder anyone just by knowing their face and name",
+                        Map.of("title", "Death Note", "Japanese-Title", "Death Note", "year", "2003", "genre", "Thriller")),
+                new Document("A young man trains so hard that he loses his hair but becomes so strong he can defeat anyone with one puch",
+                        Map.of("title", "One Punch Man", "Japanese-Title", "One Punch Man", "year", "2015", "genre", "Adventure"))
+        );
     }
 
     public List<Document> similaritySearch(String text) {

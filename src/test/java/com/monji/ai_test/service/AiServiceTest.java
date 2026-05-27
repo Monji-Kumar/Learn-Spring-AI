@@ -48,4 +48,10 @@ public class AiServiceTest {
         var response = aiService.similaritySearch("pirate anime");
         System.out.println(response);
     }
+
+//    @Test
+//    void testAskAi() throws Exception {
+//        var response = aiService.askAi("what is anime that has an alien boy who strives to be the strongest?");
+//        System.out.println(response);
+//    }
 }
