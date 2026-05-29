@@ -3,7 +3,6 @@ package com.monji.ai_test.controller;
 import com.monji.ai_test.tool.FlightBookingTools;
 import com.monji.ai_test.tool.TravellingTools;
 import lombok.RequiredArgsConstructor;
-import org.aspectj.bridge.Message;
 import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.ai.chat.client.advisor.MessageChatMemoryAdvisor;
 import org.springframework.ai.chat.memory.ChatMemory;
